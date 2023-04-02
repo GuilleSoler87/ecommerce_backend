@@ -3,7 +3,7 @@ const { Op } = Sequelize;
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/config.json')['development']
 
-
+//valida la posesión de token para realizar acciones
 const authentication = async (req, res, next) => {
     try {
         const token = req.headers.authorization;
@@ -27,7 +27,7 @@ const authentication = async (req, res, next) => {
         res.status(500).send({ error, message: 'Ha habido un problema con el token' })
     }
 };
-
+// permiso para realizar acciones por rol
 const isAdmin = async (req, res, next) => {
     const admins = ['admin', 'superadmin']; //lista de roles
     //miro si el usuario tiene el rol correcto

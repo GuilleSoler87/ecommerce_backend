@@ -7,14 +7,20 @@ const { jwt_secret } = require('../config/config.json')['development']
 const UserController = {
     // crea un usuario con password encriptada (bcrypt)
     async create(req, res) {
+        // Verificar si todos los campos están presentes
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+            return res.status(400).send({ msg: "Todos los campos son obligatorios" });
+        }
+
         req.body.role = "user";
         try {
-            const password = await bcrypt.hashSync(req.body.password, 10) //encriptamos contraseña
-            const user = await User.create({ ...req.body, password });
+            const hashedPassword = await bcrypt.hashSync(password, 10) //encriptamos contraseña
+            const user = await User.create({ ...req.body, password: hashedPassword });
             res.status(201).send({ msg: "Usuario creado con éxito", user });
         } catch (error) {
             console.error(error)
-            res.send(error) //para que en el postman (en la respueta) venga el error
+            res.send(error) //para que en el postman (en la respuesta) venga el error
         }
     },
     //login de usuario utilizando bcrypt + JWT(Token)

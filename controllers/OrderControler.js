@@ -7,7 +7,7 @@ const OrderController = {
             res.status(201).send({ msg: "Order creada con éxito", order })
         } catch (error) {
             console.error(error)
-            res.status(500).send(error)//para que en el postman (en la respueta) venga el error
+            res.status(500).send(error)//para que en el postman (en la respuesta) venga el error
         } // error del servidor
     },
     // muestra órdenes y su usuario

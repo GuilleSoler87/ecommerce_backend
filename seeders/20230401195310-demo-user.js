@@ -20,7 +20,7 @@ module.exports = {
       },
       {
         name: 'Alisse',
-        email: 'example@example.com',
+        email: 'example2@example.com',
         password: hashedPassword,
         role: 'user',
         createdAt: new Date(),

@@ -1,9 +1,10 @@
 const { Order, User } = require('../models/index.js'); // importo modelo
 const OrderController = {
-    // crea una orden
+    // crea una orden (incluye usuario y producto)
     async create(req, res) {
         try {
-            const order = await Order.create(req.body)
+            const order = await Order.create(req.body);
+            await order.addProduct(req.body.ProductId); // Para insertar en la tabla intermedia
             res.status(201).send({ msg: "Order creada con éxito", order })
         } catch (error) {
             console.error(error)
@@ -42,8 +43,8 @@ const OrderController = {
                     id: req.params.id
                 }
             });
-            res.send({ 
-                msg: 'La Order ha sido eliminada con éxito' 
+            res.send({
+                msg: 'La Order ha sido eliminada con éxito'
             });
         } catch (error) {
             console.error(error)

@@ -7,15 +7,20 @@ const { jwt_secret } = require('../config/config.json')['development']
 
 const UserController = {
     // crea un usuario con password encriptada (bcrypt)
-    async create(req, res) {
-        // Verificar si todos los campos están presentes
+    async create(req, res, next) {
+        // Verificar si todos los campos están presentes (esta es otra opción de validación)
         // const { name, email, password } = req.body;
         // if (!name || !email || !password) {
         //     return res.status(400).send({ msg: "Todos los campos son obligatorios" });
         // }
+        // if (password.length < 6) {
+        //     return res.status(400).send({ msg: "La contraseña debe tener al menos 6 caracteres" });
+        // }
         // req.body.role = "user";
         try {
-            const hashedPassword = await bcrypt.hashSync(req.body.password, 10) //encriptamos contraseña
+            let hashedPassword
+            if(req.body.password){hashedPassword = bcrypt.hashSync(req.body.password, 10)};//encriptamos contraseña
+           
             const user = await User.create({
                 ...req.body,
                 password: hashedPassword,
@@ -34,7 +39,7 @@ const UserController = {
             res.status(201).send({ msg: "Te hemos enviado un correo para confirmar el registro", user });
         } catch (error) {
             console.error(error)
-            res.send(error) //para que en el postman (en la respuesta) venga el error
+            next(error) //para que en el postman (en la respuesta) venga el error
         }
     },
     //confirmación del correo de usuario

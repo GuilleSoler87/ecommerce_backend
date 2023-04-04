@@ -1,4 +1,5 @@
-const { Category, Product } = require('../models/index.js');
+const { Category, Product, Sequelize } = require('../models/index.js');
+const { Op } = Sequelize;
 
 const CategoryController = {
   //creat categoría, requiere authentication
@@ -42,16 +43,45 @@ const CategoryController = {
       res.status(500).send(error)
     }
   },
-  //Muestra las categorías y los productos que contiene
+  //Muestra las categorías y los productos que contiene, requiere authentication
   async getAll(req, res) {
     try {
-        const categories = await Category.findAll({
-            include: [Product]
-        })
-        res.send(categories)
+      const categories = await Category.findAll({
+        include: [Product]
+      })
+      res.send(categories)
     } catch (error) {
-        console.error(error)
-        res.status(500).send(error)
+      console.error(error)
+      res.status(500).send(error)
+    }
+  },
+  // trae Categorías por ID + Productos, requiere authentication
+  async getById(req, res) {
+    try {
+      const category = await Category.findByPk(req.params.id, {
+        include: [Product]
+      })
+      res.send(category)
+    } catch (error) {
+      console.error(error)
+      res.status(500).send(error)
+    }
+  },
+  // trae Categorías por nombre + Productos, requiere authentication
+  async getOneByName(req, res) {
+    try {
+      const category = await Category.findOne({
+        where: {
+          name: {
+            [Op.like]: `%${req.params.name}%`
+          },
+        },
+        include: [Product]
+      })
+      res.send(category)
+    } catch (error) {
+      console.error(error)
+      res.status(500).send(error)
     }
   },
 

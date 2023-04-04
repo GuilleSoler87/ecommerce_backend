@@ -2,25 +2,54 @@ const { User, Order, Sequelize, Token } = require('../models/index.js'); // impo
 const { Op } = Sequelize;
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const transporter = require('../config/nodemailer.js');
 const { jwt_secret } = require('../config/config.json')['development']
 
 const UserController = {
     // crea un usuario con password encriptada (bcrypt)
     async create(req, res) {
         // Verificar si todos los campos están presentes
-        const { name, email, password } = req.body;
-        if (!name || !email || !password) {
-            return res.status(400).send({ msg: "Todos los campos son obligatorios" });
-        }
-
-        req.body.role = "user";
+        // const { name, email, password } = req.body;
+        // if (!name || !email || !password) {
+        //     return res.status(400).send({ msg: "Todos los campos son obligatorios" });
+        // }
+        // req.body.role = "user";
         try {
-            const hashedPassword = await bcrypt.hashSync(password, 10) //encriptamos contraseña
-            const user = await User.create({ ...req.body, password: hashedPassword });
-            res.status(201).send({ msg: "Usuario creado con éxito", user });
+            const hashedPassword = await bcrypt.hashSync(req.body.password, 10) //encriptamos contraseña
+            const user = await User.create({
+                ...req.body,
+                password: hashedPassword,
+                confirmed: false,
+                role: "user"
+            });
+            const emailToken = jwt.sign({ email: req.body.email }, jwt_secret, { expiresIn: '48h' })
+            const url = 'http://localhost:8080/users/confirm/' + emailToken
+            await transporter.sendMail({
+                to: req.body.email,
+                subject: "Confirme su registro",
+                html: `<h3>Bienvenido, estás a un paso de registrarte </h3>
+                <a href="${url}"> Click para confirmar tu registro</a>
+                `,
+            });
+            res.status(201).send({ msg: "Te hemos enviado un correo para confirmar el registro", user });
         } catch (error) {
             console.error(error)
             res.send(error) //para que en el postman (en la respuesta) venga el error
+        }
+    },
+    //confirmación del correo de usuario
+    async confirm(req, res) {
+        try {
+            const token = req.params.emailToken
+            const payload = jwt.verify(token, jwt_secret)
+            await User.update({ confirmed: true }, {
+                where: {
+                    email: payload.email
+                }
+            })
+            res.status(201).send("Usuario confirmado con éxito");
+        } catch (error) {
+            console.error(error)
         }
     },
     //login de usuario utilizando bcrypt + JWT(Token)
@@ -33,6 +62,9 @@ const UserController = {
             });
             if (!user) {
                 return res.status(400).send({ message: "Usuario o contraseña incorrectos" })
+            }
+            if (!user.confirmed) {
+                return res.status(400).send({ message: "Debes confirmar tu correo" }) //validación de correo
             }
             const isMatch = bcrypt.compareSync(req.body.password, user.password); //comparo contraseña
             if (!isMatch) {

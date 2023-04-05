@@ -1,4 +1,4 @@
-const { Order, User } = require('../models/index.js'); // importo modelo
+const { Order, User, Product } = require('../models/index.js'); // importo modelo
 const OrderController = {
     // crea una orden (incluye usuario y producto)
     async create(req, res) {
@@ -51,6 +51,18 @@ const OrderController = {
             res.status(500).send(error)
         }
     },
+     //muestra los pedidos y los productos que contienen, requiere authentication
+    async getAll(req, res) {
+        try {
+          const orders = await Order.findAll({
+            include: [Product]
+          })
+          res.send(orders)
+        } catch (error) {
+          console.error(error)
+          res.status(500).send(error)
+        }
+      },
 };
 
 module.exports = OrderController

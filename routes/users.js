@@ -10,6 +10,7 @@ router.delete("/logout", authentication, UserController.logout)
 router.get("/getAllUsOr", UserController.getAll)
 router.get("/getById/:id", UserController.getById)
 router.get("/getByName/:name", UserController.getOneByName)
+router.get("/getUserOrders/:id", UserController.getUserOrders)
 router.delete("/deleteById/:id", authentication, isAdmin, UserController.delete)
 router.put("/updateUserById/:id", authentication, UserController.update)
 

@@ -1,4 +1,4 @@
-const { User, Order, Sequelize, Token } = require('../models/index.js'); // importo modelo
+const { User, Order, Product, Sequelize, Token } = require('../models/index.js'); // importo modelo
 const { Op } = Sequelize;
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
@@ -141,6 +141,24 @@ const UserController = {
             res.status(500).send(error)
         }
     },
+    // trae usuario conectado + Pedidos + Productos
+    async getUserOrders(req, res) {
+        try {
+          const user = await User.findByPk(req.user.id, {
+            include: {
+              model: Order,
+              include: {
+                model: Product,
+              },
+            },
+          });
+    
+          res.status(200).send(user);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send(error)
+        }
+      },
     // borra usuario y todas sus orders
     async delete(req, res) {
         //borro usuario

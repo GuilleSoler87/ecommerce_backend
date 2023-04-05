@@ -1,6 +1,6 @@
 const { Order, User, Product } = require('../models/index.js'); // importo modelo
 const OrderController = {
-    // crea una orden (incluye usuario y producto)
+    // crea una orden (incluye usuario y producto), requiere authentication
     async create(req, res) {
         try {
             const order = await Order.create(req.body);
@@ -11,7 +11,7 @@ const OrderController = {
             res.status(500).send(error)//para que en el postman (en la respuesta) venga el error
         } // error del servidor
     },
-    // muestra órdenes y su usuario
+    // muestra órdenes y su usuario, requiere authentication
     async getAll(req, res) {
         try {
             const orders = await Order.findAll({
@@ -23,7 +23,7 @@ const OrderController = {
             res.status(500).send(error)
         }
     },
-    // trae órdenes por ID + User
+    // trae órdenes por ID + User, requiere authentication
     async getById(req, res) {
         try {
             const order = await Order.findByPk(req.params.id, {
@@ -35,7 +35,7 @@ const OrderController = {
             res.status(500).send(error)
         }
     },
-    //borra una orden
+    //borra una orden, requiere authentication
     async delete(req, res) {
         try {
             await Order.destroy({

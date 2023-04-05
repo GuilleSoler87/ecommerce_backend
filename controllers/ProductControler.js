@@ -29,7 +29,7 @@ const ProductController = {
         }
       });
 
-      // Actualizar la relación con la categoría
+      // Actualizar la relación con la categoría, requiere authentication
       if (req.body.CategoryId) {
         const category = await Category.findByPk(req.body.CategoryId);
         if (!category) {

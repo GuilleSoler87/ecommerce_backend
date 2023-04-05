@@ -19,8 +19,8 @@ const UserController = {
         // req.body.role = "user";
         try {
             let hashedPassword
-            if(req.body.password){hashedPassword = bcrypt.hashSync(req.body.password, 10)};//encriptamos contraseña
-           
+            if (req.body.password) { hashedPassword = bcrypt.hashSync(req.body.password, 10) };//encriptamos contraseña
+
             const user = await User.create({
                 ...req.body,
                 password: hashedPassword,
@@ -83,7 +83,7 @@ const UserController = {
             res.status(500).send(error)
         }
     },
-    // logout de usuario
+    // logout de usuario, requiere authentication
     async logout(req, res) {
         try {
             await Token.destroy({
@@ -100,7 +100,7 @@ const UserController = {
             res.status(500).send({ message: 'hubo un problema al tratar de desconectarte' })
         }
     },
-    // muestra usuario y sus órdenes
+    // muestra usuario y sus órdenes, requiere authentication
     async getAll(req, res) {
         try {
             const users = await User.findAll({
@@ -112,7 +112,7 @@ const UserController = {
             res.status(500).send(error)
         }
     },
-    // trae usuarios por ID + Orders
+    // trae usuarios por ID + Orders, requiere authentication
     async getById(req, res) {
         try {
             const user = await User.findByPk(req.params.id, {
@@ -124,7 +124,7 @@ const UserController = {
             res.status(500).send(error)
         }
     },
-    // trae usuario por nombre + Orders
+    // trae usuario por nombre + Orders, requiere authentication
     async getOneByName(req, res) {
         try {
             const user = await User.findOne({
@@ -141,25 +141,28 @@ const UserController = {
             res.status(500).send(error)
         }
     },
-    // trae usuario conectado + Pedidos + Productos
+    // trae usuario conectado + Pedidos + Productos, requiere authentication
     async getUserOrders(req, res) {
         try {
-          const user = await User.findByPk(req.user.id, {
-            include: {
-              model: Order,
-              include: {
-                model: Product,
-              },
-            },
-          });
-    
-          res.status(200).send(user);
+            if (!req.user || !req.user.id) {
+                return res.status(400).send('El usuario no está autenticado.');
+            }
+            const user = await User.findByPk(req.user.id, {
+                include: {
+                    model: Order,
+                    include: {
+                        model: Product,
+                    },
+                },
+            });
+
+            res.status(200).send(user);
         } catch (error) {
-          console.error(error);
-          res.status(500).send(error)
+            console.error(error);
+            res.status(500).send(error)
         }
-      },
-    // borra usuario y todas sus orders
+    },
+    // borra usuario y todas sus orders, requiere authentication
     async delete(req, res) {
         //borro usuario
         try {
@@ -182,7 +185,7 @@ const UserController = {
             res.status(500).send(error)
         }
     },
-    //actualizar usuario
+    //actualizar usuario, requiere authentication
     async update(req, res) {
         try {
             await User.update(req.body,

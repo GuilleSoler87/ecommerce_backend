@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Order.init({
-    date: DataTypes.DATEONLY,
     UserId: DataTypes.INTEGER
   }, {
     sequelize,

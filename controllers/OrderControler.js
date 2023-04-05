@@ -1,9 +1,9 @@
-const { Order, User, Product } = require('../models/index.js'); // importo modelo
+const { Order, User, Product, OrderProduct } = require('../models/index.js'); // importo modelo
 const OrderController = {
     // crea una orden (incluye usuario y producto), requiere authentication
     async create(req, res) {
         try {
-            const order = await Order.create(req.body);
+            const order = await Order.create({ ...req.body, UserId: req.user.id });
             await order.addProduct(req.body.ProductId); // Para insertar en la tabla intermedia
             res.status(201).send({ msg: "Order creada con éxito", order })
         } catch (error) {
@@ -35,12 +35,18 @@ const OrderController = {
             res.status(500).send(error)
         }
     },
-    //borra una orden, requiere authentication
+    //borra una orden y sus productos, requiere authentication
     async delete(req, res) {
         try {
             await Order.destroy({
                 where: {
                     id: req.params.id
+                }
+            });
+            //borro productos de esa orden
+            await OrderProduct.destroy({
+                where: {
+                    OrderId: req.params.id
                 }
             });
             res.send({
@@ -51,18 +57,18 @@ const OrderController = {
             res.status(500).send(error)
         }
     },
-     //muestra los pedidos y los productos que contienen, requiere authentication
+    //muestra los pedidos y los productos que contienen, requiere authentication
     async getAll(req, res) {
         try {
-          const orders = await Order.findAll({
-            include: [Product]
-          })
-          res.send(orders)
+            const orders = await Order.findAll({
+                include: [Product]
+            })
+            res.send(orders)
         } catch (error) {
-          console.error(error)
-          res.status(500).send(error)
+            console.error(error)
+            res.status(500).send(error)
         }
-      },
+    },
 };
 
 module.exports = OrderController

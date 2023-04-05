@@ -39,7 +39,7 @@ const UserController = {
             res.status(201).send({ msg: "Te hemos enviado un correo para confirmar el registro", user });
         } catch (error) {
             console.error(error)
-            next(error) //para que en el postman (en la respuesta) venga el error
+            next(error) //Pasa el error al siguiente middleware de manejo de errores
         }
     },
     //confirmación del correo de usuario

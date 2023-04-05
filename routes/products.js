@@ -9,5 +9,7 @@ router.delete("/deleteById/:id", authentication, ProductController.delete)
 router.get("/getAllProdCat", authentication, ProductController.getAll)
 router.get("/getById/:id", authentication, ProductController.getById)
 router.get("/getByName/:name", authentication, ProductController.getOneByName)
+router.get("/searchByPrice", authentication, ProductController.searchByPrice)
+router.get("/priceDesc", authentication, ProductController.getByPriDesc)
 
 module.exports = router;

@@ -18,4 +18,4 @@ const typeError = (err, req, res, next) => {
     }
 };
 module.exports = { typeError };
-module.exports = { typeError };
+

@@ -19,10 +19,10 @@ Para poder desplegar el proyecto correctamente, desde GitHub y con el acceso cor
 ## Ejecutando Node ⌨️
 Node es un entorno de ejecución de JavaScript orientado a eventos asíncronos. Node.js está diseñado para crear aplicaciones network escalables.
 
-● Node.js es un entorno de servidor de código abierto.
-● Node.js es gratis.
-● Node.js se ejecuta en varias plataformas (Windows, Linux, Unix, Mac OS X, etc.)
-● Node.js usa JavaScript en el servidor.
+- Node.js es un entorno de servidor de código abierto.
+- Node.js es gratis.
+- Node.js se ejecuta en varias plataformas (Windows, Linux, Unix, Mac OS X, etc.)
+- Node.js usa JavaScript en el servidor.
 
 Lo descargamos del siguiente enlace [*NODE*](https://nodejs.org/es/).
 
@@ -56,16 +56,17 @@ Lo descargamos del siguiente enlace [*POSTMAN*](https://www.postman.com/download
 
 Sequelize es un ORM O(Object) R (Relational) M(Mapping) que permite a los usuarios llamar a funciones javascript para interactuar con SQL DB sin escribir consultas reales. Es bastante útil para acelerar el tiempo de desarrollo.
 
-- Primero instalamos el CLI de Sequelize de forma global (solo se hace una vez en tu PC).
+Primero instalamos el CLI de Sequelize de forma global (solo se hace una vez en tu PC).
 
 ● npm install sequelize-cli -g.
 
-- Para las veces posteriores, instalaremos varias herramientas de forma simultánea.
+Para las veces posteriores, instalaremos varias herramientas de forma simultánea.
 
 ● npm install express sequelize mysql2.
 
 ## EXTRAS ⌨️
 - Encriptación de contraseñas:
+
 HASH --> Una función criptográfica hash- usualmente conocida como “hash”- es un algoritmo matemático que transforma cualquier
 bloque arbitrario de datos en una nueva serie de caracteres con una longitud fija.
 

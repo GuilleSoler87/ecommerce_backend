@@ -110,6 +110,39 @@ res.send(user)
 },
 ```
 
+- JWT JSON Web Token:
+
+JWT se crea con una clave secreta y esa clave secreta es privada para ti (tu servidor), lo que significa que nunca se revelará al público ni se inyectará dentro del token JWT. Cuando recibe un JWT del cliente, puede verificar ese JWT con esta clave secreta almacenada en el servidor.
+
+● npm i jsonwebtoken
+
+### JWT 🖳
+>Ejemplo de generar e importar el modelo Token:
+```json
+const { User, Post } = require('../models/index.js');
+const bcrypt = require ('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { jwt_secret } = require('../config/config.json')['development']
+const UserController = {
+login(req,res){
+User.findOne({
+where:{
+email:req.body.email
+}
+}).then(user=>{
+if(!user){
+return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+}
+const isMatch = bcrypt.compareSync(req.body.password, user.password);
+if(!isMatch){
+return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+}
+let token = jwt.sign({ id: user.id }, jwt_secret);
+Token.create({ token, UserId: user.id });
+res.send({ message: 'Bienvenid@' + user.name, user, token });
+})
+```
+
 
 
 ## Construido con 🛠️

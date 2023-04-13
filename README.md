@@ -9,72 +9,107 @@ En este proyecto encontramos una base de datos relacional que simula una tienda 
 
 Para poder realizarla, utilizamos un entorno de ejecución (NODE), con frameworks, ORM y junto algunos middlewares que mencionaremos más adelante.
 El diagrama que representa esta base de datos es la siguiente:
-![Computer view](./assets/diagrama.jpg)
+
+![Diagrama](./assets/diagrama.jpg)
 
 ## Comenzando 🚀
 
-Para poder desplegar el proyecto correctamente, desde GitHub y con el acceso correspondiente al repositorio de la web, clonar el repositorio en su ordenador.
+Para poder desplegar el proyecto correctamente, desde GitHub y con el acceso correspondiente al repositorio de la web, clonar el repositorio en su ordenador, también deberá instalar todas las herramientas, frameworks, y los middlewares para el funcionamiento correcto.
 
-## Ejecutando Bootstrap ⌨️
+## Ejecutando Node ⌨️
+Node es un entorno de ejecución de JavaScript orientado a eventos asíncronos. Node.js está diseñado para crear aplicaciones network escalables.
 
-Para poder ejecutar Bootstrap, debemos instalarlo en nuestro HTML dentro del <head>.
-jsDelivr es un CDN (red de distribución de contenidos). Es un grupo de servidores distribuidos en muchas ubicaciones. Estos servidores almacenan copias duplicadas de datos para que los servidores puedan cumplir con las solicitudes de datos en función de qué servidores están más cerca de los respectivos usuarios finales.
+● Node.js es un entorno de servidor de código abierto.
+● Node.js es gratis.
+● Node.js se ejecuta en varias plataformas (Windows, Linux, Unix, Mac OS X, etc.)
+● Node.js usa JavaScript en el servidor.
 
-Omita la descarga con jsDelivr para entregar la versión en caché de CSS y JS compilados de Bootstrap a su proyecto.
+Lo descargamos del siguiente enlace [*NODE*](https://nodejs.org/es/).
 
-Si está utilizando JavaScript compilado, no olvide incluir versiones CDN de jQuery y Popper js antes.
+### Instalación Nodemon:
+Nodemon es una herramienta que ayuda a desarrollar aplicaciones basadas en node.js al reiniciar automáticamente la aplicación cuando se detectan cambios en los archivos del directorio.
 
-Nosotros hemos utilizado:
+● npm install -D nodemon.
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-        crossorigin="anonymous" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-        crossorigin="anonymous" defer></script>
 
-Es importante destacar, que la etiqueta "defer" permite colocar los script en el head sin que cree conflicto con la lectura de Javascript y todo el contenido del body, permite crear una asincronía que hará que sea lo último que se lea independientemente de su posición en el head.
+## Ejecutando Express ⌨️
+Un framework como Express, es un patrón o esquema que ayuda a la programación a estructurar el código y a ahorrar tiempo y
+esfuerzos a los programadores. Express.js es un framework de Node.js y permite crear una API robusta rápido y fácil.
 
-## Ejecutando JavaScript ⌨️
+● npm install express.
 
-Dentro del <head> del HTML introducimos <script src="scripts/......js"></script>
-Con la etiqueta "defer" podemos colocarlo en el head por lo ya explicado anteriormente y vinculamos el archivo .js al archivo .html.
 
-En los códigos JavaScript encontramos funciones del tipo:
+## Instalando Postman ⌨️
+Postman es una herramienta que sirve de gran ayuda al equipo de desarrollo, permitiendo mantener las colecciones actualizadas, ahorrando los tiempos de respuesta al momento de realizar los test o las llamadas a los servicios.
 
-- const response = await axios.get(API_URL); --- (Llamamos una API que nos permite utilizar información almacenada en el servidor)
+Postman sirve para múltiples tareas dentro de las cuales destacaremos en esta oportunidad las siguientes:
 
-- homeLink.addEventListener("click", showQuiz); --- (Un evento que nos permite navegar entre páginas con el modelo SPA).
+- Testear colecciones o catálogos de APIs tanto para Frontend como para Backend.
+- Organizar en carpetas, funcionalidades y módulos los servicios web.
+- Permite gestionar el ciclo de vida (conceptualización y definición, desarrollo, monitoreo y mantenimiento) de nuestra API.
+- Generar documentación de nuestras APIs.
+- Trabajar con entornos (calidad, desarrollo, producción) y de este modo es posible compartir a través de un entorno cloud la información con   el resto del equipo involucrado en el desarrollo.
 
-- De condición (if, else if, else) --- (Se realizan ciertas acciones cuando se cumplen las condiciones o no se cumplen).
+Lo descargamos del siguiente enlace [*POSTMAN*](https://www.postman.com/downloads/).
 
-- localStorage.setItem("scores", JSON.stringify(totalScores)); --- (Subir el score del Quiz al Local Storage haya o no contenido previo en la array de scores, para crear un historial y posteriormente utilizarla en combinación con el código inferior).
+## Ejecutando Sequelize ⌨️
 
-- totalScores = JSON.parse(localStorage.getItem("scores")) || []; --- (Acceder a la información del local storage y consultar el histórico de scores).
+Sequelize es un ORM O(Object) R (Relational) M(Mapping) que permite a los usuarios llamar a funciones javascript para interactuar con SQL DB sin escribir consultas reales. Es bastante útil para acelerar el tiempo de desarrollo.
 
-- setTimeout(function ()) {}; --- (Realizar acciones una vez transcurrido el tiempo definido, automatiza el test para pasar a la siguiente pregunta).
+- Primero instalamos el CLI de Sequelize de forma global (solo se hace una vez en tu PC).
 
-- button.disabled = true; --- (Bloquea los botones de respuesta una vez se ha seleccionado una de las opciones).
+● npm install sequelize-cli -g.
 
-- function shuffleArray(array) {}; --- (Función que coge las cuatro posibles respuestas, las mezcla, y las devuelve en un array con posición aleatoria).
+- Para las veces posteriores, instalaremos varias herramientas de forma simultánea.
 
-- const myGrafic = new Chart(grafic, {}); --- (Variable que se utiliza para dibujar un gráfico).
+● npm install express sequelize mysql2.
 
-## Ejecutando Axios ⌨️
+## EXTRAS ⌨️
+- Encriptación de contraseñas:
+HASH --> Una función criptográfica hash- usualmente conocida como “hash”- es un algoritmo matemático que transforma cualquier
+bloque arbitrario de datos en una nueva serie de caracteres con una longitud fija.
 
-<script src="https://unpkg.com/axios/dist/axios.min.js" defer></script> --- (Código que utilizamos para instalar Axios).
-Axios es una librería JavaScript que puede ejecutarse en el navegador y que nos permite hacer sencillas las operaciones como cliente HTTP.
+SALT --> Un salt es una string aleatoria. Al encriptar una contraseña de texto sin formato más un salt, la salida del
+algoritmo hash ya no es predecible. La misma contraseña ya no producirá el mismo hash.
 
-## Ejecutando ChartJS - Gráfico ⌨️
+● npm i bcryptjs
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" defer></script> --- (Código que utilizamos para instalar ChartJs). ChartJs es una libreria que proporciona un modelo de graficos, el cual podemos implementar en nuestros proyectos web.
+### BCRYPT 🖳
+>Ejemplo de importación del módulo bcrypt:
+```json
+const { User, Post } = require('../models/index.js');
+const bcrypt = require ('bcryptjs');
+const UserController = {
+create(req, res) {
+req.body.role = "user";
+const password = bcrypt.hashSync(req.body.password,10)
+User.create({...req.body, password:password })
+.then(user => res.status(201).send({ message: 'Usuario creado con éxito', user }))
+.catch(err => console.error(err))
+},
+```
+>Creando ejemplo de login de la siguiente forma con bcrypt:
+```json
+const UserController = {
+login(req,res){
+User.findOne({
+where:{
+email:req.body.email
+}
+}).then(user=>{
+if(!user){
+return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+}
+const isMatch = bcrypt.compareSync(req.body.password, user.password);
+if(!isMatch){
+return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+}
+res.send(user)
+})
+},
+```
 
-<canvas id="grafica" class="mt-3" height="300" width="300"></canvas> --- (En el código HTML especificaremos donde aparecerá la gráfica dentro de la etiqueta <canvas>).
+
 
 ## Construido con 🛠️
 

@@ -78,36 +78,36 @@ algoritmo hash ya no es predecible. La misma contraseña ya no producirá el mis
 
 
 >Ejemplo de importación del módulo bcrypt:
-```json
+```js
 const { User, Post } = require('../models/index.js');
 const bcrypt = require ('bcryptjs');
 const UserController = {
-create(req, res) {
-req.body.role = "user";
+    create(req, res) {
+    req.body.role = "user";
 const password = bcrypt.hashSync(req.body.password,10)
-User.create({...req.body, password:password })
-.then(user => res.status(201).send({ message: 'Usuario creado con éxito', user }))
-.catch(err => console.error(err))
+    User.create({...req.body, password:password })
+    .then(user => res.status(201).send({ message: 'Usuario creado con éxito', user }))
+    .catch(err => console.error(err))
 },
 ```
 >Creando ejemplo de login de la siguiente forma con bcrypt:
-```json
+```js
 const UserController = {
-login(req,res){
-User.findOne({
-where:{
-email:req.body.email
-}
-}).then(user=>{
-if(!user){
-return res.status(400).send({message:"Usuario o contraseña incorrectos"})
-}
-const isMatch = bcrypt.compareSync(req.body.password, user.password);
-if(!isMatch){
-return res.status(400).send({message:"Usuario o contraseña incorrectos"})
-}
-res.send(user)
-})
+    login(req,res){
+    User.findOne({
+        where:{
+        email:req.body.email
+        }
+    }).then(user=>{
+    if(!user){
+    return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+    }
+    const isMatch = bcrypt.compareSync(req.body.password, user.password);
+    if(!isMatch){
+    return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+    }
+    res.send(user)
+    })
 },
 ```
 
@@ -119,25 +119,25 @@ JWT se crea con una clave secreta y esa clave secreta es privada para ti (tu ser
 
 
 >Ejemplo de generar e importar el modelo Token:
-```json
+```js
 const { User, Post } = require('../models/index.js');
 const bcrypt = require ('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/config.json')['development']
 const UserController = {
-login(req,res){
-User.findOne({
-where:{
-email:req.body.email
-}
-}).then(user=>{
-if(!user){
-return res.status(400).send({message:"Usuario o contraseña incorrectos"})
-}
+    login(req,res){
+        User.findOne({
+        where:{
+        email:req.body.email
+        }
+        }).then(user=>{
+    if(!user){
+    return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+    }
 const isMatch = bcrypt.compareSync(req.body.password, user.password);
-if(!isMatch){
-return res.status(400).send({message:"Usuario o contraseña incorrectos"})
-}
+    if(!isMatch){
+    return res.status(400).send({message:"Usuario o contraseña incorrectos"})
+    }
 let token = jwt.sign({ id: user.id }, jwt_secret);
 Token.create({ token, UserId: user.id });
 res.send({ message: 'Bienvenid@' + user.name, user, token });
@@ -150,38 +150,38 @@ res.send({ message: 'Bienvenid@' + user.name, user, token });
 - Creamos una carpeta middleware y dentro de ella un archivo que se llame authentication.js que contendrá el siguiente código:
 
 >Middleware de autenticación:
-```json
+```js
 const { User, Token, Sequelize } = require('../models');
 const { Op } = Sequelize;
 const jwt = require('jsonwebtoken');
 const {jwt_secret} = require('../config/config.json')['development']
 const authentication = async(req, res, next) => {
-try {
-const token = req.headers.authorization;
-const payload = jwt.verify(token, jwt_secret);
-const user = await User.findByPk(payload.id);
-const tokenFound = await Token.findOne({
-where: {
-[Op.and]: [
-{ UserId: user.id },
-{ token: token }
-]
-}
-});
-if (!tokenFound) {
-return res.status(401).send({ message: 'No estas autorizado' });
-}
-req.user = user;
-next();
-} catch (error) {
-console.log(error)
-res.status(500).send({ error, message: 'Ha habido un problema con el token' })
-}
+    try {
+    const token = req.headers.authorization;
+    const payload = jwt.verify(token, jwt_secret);
+    const user = await User.findByPk(payload.id);
+    const tokenFound = await Token.findOne({
+        where: {
+        [Op.and]: [
+            { UserId: user.id },
+            { token: token }
+        ]
+        }
+    });
+    if (!tokenFound) {
+    return res.status(401).send({ message: 'No estas autorizado' });
+    }
+    req.user = user;
+    next();
+    } catch (error) {
+    console.log(error)
+    res.status(500).send({ error, message: 'Ha habido un problema con el token' })
+    }
 }
 module.exports = { authentication }
 ```
 >Ejemplo de implementación:
-```json
+```js
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/UserController')
@@ -200,12 +200,12 @@ module.exports = router;
 - Ahora crearemos un middleware que chequeara el rol del usuario para saber si es admin, lo añadimos al código de autentication:
 
 >Middleware de admin:
-```json
+```js
 const isAdmin = async(req, res, next) => {
 const admins = ['admin','superadmin'];
-if (!admins.includes(req.user.role)) {
-return res.status(403).send({
-message: 'No tienes permisos'
+    if (!admins.includes(req.user.role)) {
+    return res.status(403).send({
+    message: 'No tienes permisos'
 });
 }
 next();
@@ -222,64 +222,64 @@ forma sencilla. Para instalarlo ejecutamos el siguiente comando:
 - Creamos un archivo nodemailer.js en la carpeta config donde se guardará la siguiente configuración:
 
 >Ejemplo de nodemailer:
-```json
+```js
 const nodemailer = require('nodemailer');
 let transporter = nodemailer.createTransport({
-host: 'smtp.gmail.com',
-port: 465,
-secure: true,
-auth: {
-user: 'tuemail@gmail.com',
-pass: '123456'
-}
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'tuemail@gmail.com',
+        pass: '123456'
+    }
 });
 module.exports = transporter;
 ```
 >Ejemplo para importar el módulo nodemailer:
-```json
+```js
 const transporter = require("../config/nodemailer");
 . . .
 async create(req, res, next) {
-try {
-const hash = bcrypt.hashSync(req.body.password, 10);
-const user = await User.create({
-...req.body,
-password: hash,
-confirmed: false,
-rol: "user",
-});
+    try {
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    const user = await User.create({
+        ...req.body,
+        password: hash,
+        confirmed: false,
+        rol: "user",
+    });
 await transporter.sendMail({
-to: req.body.email,
-subject: "Confirme su registro",
-html: `<h3>Bienvenido, estás a un paso de registrarte </h3>
-<a href="#"> Click para confirmar tu registro</a>
-`,
+    to: req.body.email,
+    subject: "Confirme su registro",
+    html: `<h3>Bienvenido, estás a un paso de registrarte </h3>
+    <a href="#"> Click para confirmar tu registro</a>
+    `,
 });
 res.status(201).send({
-message: "Te hemos enviado un correo para confirmar el registro",
-user,
+    message: "Te hemos enviado un correo para confirmar el registro",
+    user,
 });
 } catch (err) {
-err.origin = “User”;
-next(err)
+    err.origin = “User”;
+    next(err)
 }
 },
 ```
 - Ahora crearemos un endpoint en nuestro UserController que nos confirme el usuario:
 
 >Confirmación de usuario:
-```json
+```js
 async confirm(req,res){
-try {
-await User.update({confirmed:true},{
-where:{
-email: req.params.email
-}
-})
+    try {
+        await User.update({confirmed:true},{
+            where:{
+            email: req.params.email
+        }
+    })
 res.status(201).send( "Usuario confirmado con éxito" );
-} catch (error) {
-console.error(error)
-}
+    } catch (error) {
+        console.error(error)
+    }
 },
 ```
 ### Middleware errors 🖳
@@ -289,41 +289,41 @@ console.error(error)
 - Vamos a introducir cambios en la parte del manejo del error en el controlador UserController (catch), para ello necesitamos utilizar el parámetro “next” y pasarle el error que tenemos capturado. También vamos a modificar el error añadiendo una nueva propiedad “origin”.
 
 >Actualización del controlador:
-```json
+```js
 async create(req, res,next) {
-try {
-req.body.role = "user";
-const password = await bcrypt.hash(req.body.password, 10);
-const user = await User.create({ ...req.body, password });
-res.send(user);
-} catch (error) {
-console.error(error)
-next(error)
-}
+    try {
+        req.body.role = "user";
+        const password = await bcrypt.hash(req.body.password, 10);
+        const user = await User.create({ ...req.body, password });
+        res.send(user);
+    } catch (error) {
+        console.error(error)
+        next(error)
+    }
 },
 ```
 - En la carpeta “middlewares” creamos un archivo llamado “errors.js”.
 
 >Middleware de errores:
-```json
+```js
 const handleValidationError = (err, res) => {
-let errors = err.errors.map((el) => el.message);
-if (errors.length > 1) {
-const msgErr = errors.join(" || ");
-res.status(400).send({ messages: msgErr });
-} else {
-res.status(400).send({ messages: errors });
-}
+    let errors = err.errors.map((el) => el.message);
+    if (errors.length > 1) {
+        const msgErr = errors.join(" || ");
+        res.status(400).send({ messages: msgErr });
+    } else {
+        res.status(400).send({ messages: errors });
+    }
 };
 const typeError = (err, req, res, next) => {
-if (
-err.name === "SequelizeValidationError" ||
-err.name === "SequelizeUniqueConstraintError"
-) {
-handleValidationError(err, res);
-} else {
-res.status(500).send({ msg: "Hubo un problema",err });
-}
+    if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError"
+    ) {
+        handleValidationError(err, res);
+    } else {
+        res.status(500).send({ msg: "Hubo un problema",err });
+    }
 };
 module.exports = { typeError };
 ```

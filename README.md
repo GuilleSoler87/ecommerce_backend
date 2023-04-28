@@ -347,7 +347,7 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 ## Autores ✒️
 
-* **Guillermo Soler Fernández** - *Proyecto Quiz - JavaScript* - [GuilleSoler87](https://github.com/GuilleSoler87)
+* **Guillermo Soler Fernández** - *Proyecto Backend - Node-SQL-Express* - [GuilleSoler87](https://github.com/GuilleSoler87)
 
 
 ## Licencia 📄

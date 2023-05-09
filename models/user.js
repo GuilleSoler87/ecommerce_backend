@@ -4,11 +4,6 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       User.hasMany(models.Order);
       User.hasMany(models.Review)
@@ -43,11 +38,14 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: "Por favor introduce tu contraseña",
         },
-        
       },
     },
     role: DataTypes.STRING,
-    confirmed: DataTypes.BOOLEAN
+    confirmed: DataTypes.BOOLEAN,
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   }, {
     sequelize,
     modelName: 'User',

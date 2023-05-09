@@ -5,8 +5,15 @@ const ProductController = {
   // crea producto y añade categorías, requiere authentication
   async create(req, res, next) {
     try {
-      const product = await Product.create(req.body);
-      await product.addCategory(req.body.CategoryId); // Para insertar en la tabla intermedia
+      const { name, price, CategoryId } = req.body;
+      const product = await Product.create({
+        name,
+        price,
+        image: req.file ? req.file.filename : null // Si se ha subido una imagen, se guarda el nombre del archivo en la base de datos
+      });
+      if (CategoryId) { // Si se ha especificado una categoría, se añade a la tabla intermedia
+        await product.addCategory(CategoryId);
+      }
       res.status(201).send({ msg: "Producto creado con éxito", product });
     } catch (error) {
       console.error(error);
@@ -21,29 +28,37 @@ const ProductController = {
       if (!product) {
         return res.status(404).send({ message: 'Producto no encontrado' });
       }
-
+  
+      const { name, price, CategoryId } = req.body;
+      const updates = { name, price };
+  
+      if (req.file) { // Si se ha subido una imagen, se actualiza en la base de datos
+        updates.image = req.file.filename;
+      }
+  
       // Actualizar el producto
-      await Product.update(req.body, {
+      await Product.update(updates, {
         where: {
           id: productId
         }
       });
-
+  
       // Actualizar la relación con la categoría, requiere authentication
-      if (req.body.CategoryId) {
-        const category = await Category.findByPk(req.body.CategoryId);
+      if (CategoryId) {
+        const category = await Category.findByPk(CategoryId);
         if (!category) {
           return res.status(404).send({ message: 'Categoría no encontrada' });
         }
         await product.setCategories(category);
       }
-
+  
       res.send({ message: 'Producto actualizado correctamente' });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: 'Ha ocurrido un error al actualizar el producto' });
     }
   },
+  
   // borra producto y todas sus categorías, requiere authentication
   async delete(req, res) {
     //borro producto

@@ -2,8 +2,9 @@ const express = require("express")
 const { typeError } = require("./middleware/errors.js")
 const app = express()
 const PORT = 8080
+const cors = require("cors")
 
-
+app.use(cors());
 app.use(express.json()) // pargear/ traducir el req.body para que no sea undefined
 
 app.use("/users",require("./routes/users.js"))

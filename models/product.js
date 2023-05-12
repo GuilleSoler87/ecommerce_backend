@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
@@ -14,13 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasMany(models.Review);
     }
   }
+
   Product.init({
     name: {
-     type: DataTypes.STRING,
-     allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notNull: {
-          msg: "Por favor introduce nombre del producto",
+          msg: 'Por favor introduce nombre del producto',
         },
       },
     },
@@ -29,17 +29,28 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: {
-          msg: "Por favor introduce precio del producto",
+          msg: 'Por favor introduce precio del producto',
+        },
+      },
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Por favor introduce descripción del producto',
         },
       },
     },
     image: {
       type: DataTypes.STRING,
       allowNull: true,
-    }
+    },
   }, {
     sequelize,
     modelName: 'Product',
   });
+
   return Product;
 };
+

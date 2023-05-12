@@ -6,6 +6,7 @@ const cors = require("cors")
 
 app.use(cors());
 app.use(express.json()) // pargear/ traducir el req.body para que no sea undefined
+app.use(express.static("./uploads"))
 
 app.use("/users",require("./routes/users.js"))
 app.use("/orders",require("./routes/orders.js"))

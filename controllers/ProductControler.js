@@ -5,21 +5,23 @@ const ProductController = {
   // crea producto y añade categorías, requiere authentication
   async create(req, res, next) {
     try {
-      const { name, price, CategoryId } = req.body;
+      const { name, price, description, CategoryId } = req.body;
       const product = await Product.create({
         name,
         price,
-        image: req.file ? req.file.filename : null // Si se ha subido una imagen, se guarda el nombre del archivo en la base de datos
+        description,
+        image: req.file ? req.file.filename : null
       });
-      if (CategoryId) { // Si se ha especificado una categoría, se añade a la tabla intermedia
+      if (CategoryId) {
         await product.addCategory(CategoryId);
       }
       res.status(201).send({ msg: "Producto creado con éxito", product });
     } catch (error) {
       console.error(error);
-      next(error); //Pasa el error al siguiente middleware de manejo de errores
+      next(error);
     }
   },
+    
   //update producto y sus categorías, requiere authentication
   async update(req, res) {
     try {

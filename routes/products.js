@@ -4,9 +4,9 @@ const { authentication, isAdmin } = require("../middleware/authentication")
 const upload = require("../middleware/multer");
 const router = express.Router()
 
-router.post("/create", upload.single("image"), ProductController.create) //authentication, isAdmin, 
-router.put("/updateProdById/:id", upload.single("image"), ProductController.update) //authentication, isAdmin,
-router.delete("/deleteById/:id", ProductController.delete) //authentication, isAdmin
+router.post("/create", authentication, upload.single("image"), ProductController.create) // isAdmin, 
+router.put("/updateProdById/:id", authentication, upload.single("image"), ProductController.update) // isAdmin,
+router.delete("/deleteById/:id", authentication, ProductController.delete) // isAdmin
 router.get("/getAllProdCat", ProductController.getAll)
 router.get("/getById/:id", ProductController.getById) //authentication,
 router.get("/getByName/:name", authentication, ProductController.getOneByName)

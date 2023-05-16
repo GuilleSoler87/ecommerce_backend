@@ -46,13 +46,8 @@ const ProductController = {
       });
   
       // Actualizar la relación con la categoría, requiere authentication
-      if (CategoryId) {
-        const category = await Category.findByPk(CategoryId);
-        if (!category) {
-          return res.status(404).send({ message: 'Categoría no encontrada' });
-        }
-        await product.setCategories(category);
-      }
+  
+      await product.setCategories(CategoryId);
   
       res.send({ message: 'Producto actualizado correctamente' });
     } catch (error) {

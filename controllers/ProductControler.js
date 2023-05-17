@@ -31,8 +31,8 @@ const ProductController = {
         return res.status(404).send({ message: 'Producto no encontrado' });
       }
   
-      const { name, price, CategoryId } = req.body;
-      const updates = { name, price };
+      const { name, price, description, CategoryId } = req.body;
+      const updates = { name, price, description};
   
       if (req.file) { // Si se ha subido una imagen, se actualiza en la base de datos
         updates.image = req.file.filename;

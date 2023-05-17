@@ -9,7 +9,7 @@ router.put("/updateProdById/:id", authentication, upload.single("image"), Produc
 router.delete("/deleteById/:id", authentication, ProductController.delete) // isAdmin
 router.get("/getAllProdCat", ProductController.getAll)
 router.get("/getById/:id", ProductController.getById) //authentication,
-router.get("/getByName/:name", authentication, ProductController.getOneByName)
+router.get("/getByName/:name", ProductController.getOneByName) //authentication,
 router.get("/searchByPrice", authentication, ProductController.searchByPrice)
 router.get("/priceDesc", authentication, ProductController.getByPriDesc)
 
